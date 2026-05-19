@@ -176,7 +176,7 @@ class IngestService {
 			fetched = await fetchForPreflight(urlObj.toString());
 		} catch (error) {
 			const message = error instanceof Error ? error.message : "unknown error";
-			logger.warn(null, "Preflight fetch failed", null, {url: urlObj.toString(), message});
+			logger.warning(null, "Preflight fetch failed", null, {url: urlObj.toString(), message});
 			return rejectionFromUnreachable(message);
 		}
 

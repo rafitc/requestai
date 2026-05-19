@@ -101,6 +101,7 @@ export default (route: Router): void => {
 						.insert(collections)
 						.values({userId, name: parsed.name})
 						.returning({id: collections.id});
+					if (!collectionRow) {throw new Error("Failed to insert collection row");}
 
 					const [versionRow] = await tx
 						.insert(collectionVersions)
@@ -116,6 +117,7 @@ export default (route: Router): void => {
 							},
 						})
 						.returning({id: collectionVersions.id});
+					if (!versionRow) {throw new Error("Failed to insert collection version row");}
 
 					const [jobRow] = await tx
 						.insert(aiJobs)
@@ -127,6 +129,7 @@ export default (route: Router): void => {
 							input: {versionId: versionRow.id, source: parsed.source, platforms: parsed.platforms},
 						})
 						.returning({id: aiJobs.id});
+					if (!jobRow) {throw new Error("Failed to insert ai_jobs row");}
 
 					return {
 						collectionId: collectionRow.id,
@@ -216,13 +219,20 @@ export default (route: Router): void => {
 		isAuthorized,
 		async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 			const userId = req.user?.id;
-			const {id} = req.params;
+			const id = req.params.id;
 
 			if (!userId) {
 				res.fail(
 					genericServiceErrors.auth.NoAuthorizationToken,
 					httpStatusCodes.CLIENT_ERROR_UNAUTHORIZED
 				);
+				return;
+			}
+			if (!id) {
+				res.status(httpStatusCodes.CLIENT_ERROR_BAD_REQUEST).json({
+					isSuccess: false,
+					error: {code: "missing_id", message: "Collection id is required."},
+				});
 				return;
 			}
 
@@ -281,13 +291,21 @@ export default (route: Router): void => {
 		isAuthorized,
 		async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 			const userId = req.user?.id;
-			const {id, format} = req.params;
+			const id = req.params.id;
+			const format = req.params.format;
 
 			if (!userId) {
 				res.fail(
 					genericServiceErrors.auth.NoAuthorizationToken,
 					httpStatusCodes.CLIENT_ERROR_UNAUTHORIZED
 				);
+				return;
+			}
+			if (!id || !format) {
+				res.status(httpStatusCodes.CLIENT_ERROR_BAD_REQUEST).json({
+					isSuccess: false,
+					error: {code: "missing_params", message: "Collection id and format are required."},
+				});
 				return;
 			}
 

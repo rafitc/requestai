@@ -77,7 +77,10 @@ class JobQueueService {
 	): Promise<void> {
 		await this.getBoss().work(
 			QUEUE_GENERATE_COLLECTION,
-			async ([job]: PgBoss.Job<iGenerateCollectionPayload>[]) => {
+			async (jobs: PgBoss.Job<iGenerateCollectionPayload>[]) => {
+				// pg-boss may invoke with an empty array on graceful shutdown.
+				const job = jobs[0];
+				if (!job) {return;}
 				await handler(job.data);
 			}
 		);

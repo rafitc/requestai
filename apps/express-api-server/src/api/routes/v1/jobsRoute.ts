@@ -17,13 +17,20 @@ export default (route: Router): void => {
 		isAuthorized,
 		async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 			const userId = req.user?.id;
-			const {id} = req.params;
+			const id = req.params.id;
 
 			if (!userId) {
 				res.fail(
 					genericServiceErrors.auth.NoAuthorizationToken,
 					httpStatusCodes.CLIENT_ERROR_UNAUTHORIZED
 				);
+				return;
+			}
+			if (!id) {
+				res.status(httpStatusCodes.CLIENT_ERROR_BAD_REQUEST).json({
+					isSuccess: false,
+					error: {code: "missing_id", message: "Job id is required."},
+				});
 				return;
 			}
 
