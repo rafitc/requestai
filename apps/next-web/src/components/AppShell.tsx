@@ -127,10 +127,11 @@ function Sidebar({pathname}: {pathname: string}) {
 
 			{NAV_ITEMS.map((item) => {
 				const Icon = item.icon;
+				const basePath = item.href.split("?")[0] ?? item.href;
 				const active =
 					item.href === "/dashboard"
 						? pathname === "/dashboard"
-						: pathname.startsWith(item.href.split("?")[0]);
+						: pathname.startsWith(basePath);
 				return (
 					<Link
 						key={item.label}
