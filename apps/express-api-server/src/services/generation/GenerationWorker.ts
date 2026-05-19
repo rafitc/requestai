@@ -7,6 +7,7 @@ import {
 } from "@requestai/database";
 
 import logger from "@loaders/logger";
+import {creditService, GENERATION_CREDIT_COST} from "@services/credits";
 import {
 	jobQueueService,
 	type iGenerateCollectionPayload,
@@ -61,7 +62,7 @@ async function updateJobStep(
 }
 
 async function processJob(payload: iGenerateCollectionPayload): Promise<void> {
-	const {aiJobId, versionId, collectionId} = payload;
+	const {aiJobId, versionId, collectionId, userId} = payload;
 
 	logger.info(null, "GenerationWorker: starting job", {aiJobId});
 
@@ -106,6 +107,20 @@ async function processJob(payload: iGenerateCollectionPayload): Promise<void> {
 			.update(aiJobs)
 			.set({state: "failed", error: message, finishedAt: new Date()})
 			.where(eq(aiJobs.id, aiJobId));
+
+		// Credit was pre-debited in the create route — refund it so the user
+		// isn't charged for a failed generation. Best-effort; surface the
+		// refund failure in logs but propagate the original error.
+		try {
+			await creditService.refund({
+				userId,
+				amount: GENERATION_CREDIT_COST,
+				refId: aiJobId,
+			});
+		} catch (refundError) {
+			logger.error(null, "GenerationWorker: refund failed", refundError, {aiJobId, userId});
+		}
+
 		logger.error(null, "GenerationWorker: failed", error);
 		throw error;
 	}

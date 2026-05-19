@@ -3,6 +3,7 @@ import {Router} from "express";
 import {apiVersioningMiddleware} from "@api/middlewares";
 import authRoute from "@api/routes/v1/authRoute";
 import healthRoute from "@api/routes/healthRoute";
+import shareRoute from "@api/routes/shareRoute";
 import {registerV1Routes} from "@api/routes/v1";
 
 /**
@@ -24,6 +25,10 @@ export default (): Router => {
 	// Better Auth catch-all (also unversioned). Must be registered BEFORE the
 	// versioning middleware so its /api/auth/... paths don't get rejected.
 	authRoute(apiRouter);
+
+	// Public share routes — no auth, no version prefix. Registered before
+	// the versioning middleware so /api/share/* slugs work directly.
+	shareRoute(apiRouter);
 
 	// Versioning middleware guards everything below — only versioned business
 	// endpoints from here on out.

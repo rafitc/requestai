@@ -6,8 +6,11 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {
 	ArrowUpRightIcon,
 	FilesIcon,
+	MoreVerticalIcon,
+	PencilIcon,
 	PlusIcon,
 	SparklesIcon,
+	Trash2Icon,
 	Wand2Icon,
 	ZapIcon,
 } from "lucide-react";
@@ -180,7 +183,7 @@ export default function DashboardPage() {
 				) : (
 					<ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
 						{items.map((item) => (
-							<CollectionCard key={item.id} item={item} />
+							<CollectionCard key={item.id} item={item} onChanged={refresh} />
 						))}
 					</ul>
 				)}
@@ -248,8 +251,52 @@ function StatTile({
 	);
 }
 
-function CollectionCard({item}: {item: CollectionListItem}) {
+function CollectionCard({
+	item,
+	onChanged,
+}: {
+	item: CollectionListItem;
+	onChanged: () => void | Promise<void>;
+}) {
 	const ready = !!item.currentVersionId;
+	const [renaming, setRenaming] = useState(false);
+	const [draftName, setDraftName] = useState(item.name);
+	const [menuOpen, setMenuOpen] = useState(false);
+	const [busy, setBusy] = useState(false);
+
+	async function commitRename() {
+		const next = draftName.trim();
+		if (!next || next === item.name) {
+			setRenaming(false);
+			setDraftName(item.name);
+			return;
+		}
+		setBusy(true);
+		try {
+			await apiFetch(`/collections/${item.id}`, {
+				method: "PATCH",
+				body: JSON.stringify({name: next}),
+			});
+			setRenaming(false);
+			await onChanged();
+		} catch {
+			setDraftName(item.name);
+		} finally {
+			setBusy(false);
+		}
+	}
+
+	async function handleDelete() {
+		if (!window.confirm(`Delete "${item.name}"? This can't be undone.`)) return;
+		setBusy(true);
+		try {
+			await apiFetch(`/collections/${item.id}`, {method: "DELETE"});
+			await onChanged();
+		} finally {
+			setBusy(false);
+		}
+	}
+
 	return (
 		<li className="card-elevated group relative flex items-center gap-3 p-4 transition-colors hover:bg-accent/30">
 			<div
@@ -261,12 +308,30 @@ function CollectionCard({item}: {item: CollectionListItem}) {
 				<Wand2Icon className="h-4.5 w-4.5" />
 			</div>
 			<div className="min-w-0 flex-1">
-				<Link
-					href={`/collections/${item.id}`}
-					className="block truncate text-sm font-medium hover:underline"
-				>
-					{item.name}
-				</Link>
+				{renaming ? (
+					<input
+						autoFocus
+						value={draftName}
+						disabled={busy}
+						onChange={(e) => setDraftName(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") void commitRename();
+							if (e.key === "Escape") {
+								setRenaming(false);
+								setDraftName(item.name);
+							}
+						}}
+						onBlur={() => void commitRename()}
+						className="w-full rounded-md border border-input bg-background px-2 py-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+					/>
+				) : (
+					<Link
+						href={`/collections/${item.id}`}
+						className="block truncate text-sm font-medium hover:underline"
+					>
+						{item.name}
+					</Link>
+				)}
 				<p className="mt-0.5 truncate text-xs text-muted-foreground">
 					Created {new Date(item.createdAt).toLocaleString()}
 				</p>
@@ -292,6 +357,51 @@ function CollectionCard({item}: {item: CollectionListItem}) {
 				>
 					<ArrowUpRightIcon className="h-4 w-4" />
 				</Link>
+				<div className="relative">
+					<button
+						type="button"
+						onClick={() => setMenuOpen((v) => !v)}
+						className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+						aria-label="More actions"
+						aria-expanded={menuOpen}
+					>
+						<MoreVerticalIcon className="h-4 w-4" />
+					</button>
+					{menuOpen && (
+						<>
+							<button
+								type="button"
+								aria-hidden
+								className="fixed inset-0 z-30 cursor-default"
+								onClick={() => setMenuOpen(false)}
+							/>
+							<div className="card-elevated absolute right-0 top-full z-40 mt-1 w-40 overflow-hidden p-1 text-sm shadow-lg">
+								<button
+									type="button"
+									className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 hover:bg-accent"
+									onClick={() => {
+										setMenuOpen(false);
+										setRenaming(true);
+									}}
+								>
+									<PencilIcon className="h-3.5 w-3.5" />
+									Rename
+								</button>
+								<button
+									type="button"
+									className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-destructive hover:bg-destructive/10"
+									onClick={() => {
+										setMenuOpen(false);
+										void handleDelete();
+									}}
+								>
+									<Trash2Icon className="h-3.5 w-3.5" />
+									Delete
+								</button>
+							</div>
+						</>
+					)}
+				</div>
 			</div>
 		</li>
 	);

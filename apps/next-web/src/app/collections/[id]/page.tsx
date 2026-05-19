@@ -6,10 +6,13 @@ import {useParams, useRouter} from "next/navigation";
 import {
 	ArrowLeftIcon,
 	BoxesIcon,
+	CheckIcon,
 	CodeIcon,
+	CopyIcon,
 	DownloadIcon,
 	FileTextIcon,
 	LinkIcon,
+	Share2Icon,
 	SparklesIcon,
 } from "lucide-react";
 
@@ -193,9 +196,139 @@ export default function CollectionDetailPage() {
 							</div>
 						</div>
 					</section>
+
+					<ShareCard
+						collectionId={detail.id}
+						shareEnabled={detail.shareEnabled}
+						shareSlug={detail.shareSlug}
+						onChange={(next) =>
+							setDetail((prev) =>
+								prev
+									? {
+											...prev,
+											shareEnabled: next.shareEnabled,
+											shareSlug: next.shareSlug,
+										}
+									: prev
+							)
+						}
+					/>
 				</div>
 			)}
 		</AppShell>
+	);
+}
+
+function ShareCard({
+	collectionId,
+	shareEnabled,
+	shareSlug,
+	onChange,
+}: {
+	collectionId: string;
+	shareEnabled: boolean;
+	shareSlug: string | null;
+	onChange: (next: {shareEnabled: boolean; shareSlug: string | null}) => void;
+}) {
+	const [busy, setBusy] = useState(false);
+	const [copied, setCopied] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
+	// Public share URL points at the FE viewer page (which calls the API
+	// in turn). That way the recipient sees a UI with download buttons,
+	// not a raw JSON metadata response.
+	const shareUrl =
+		shareEnabled && shareSlug && typeof window !== "undefined"
+			? `${window.location.origin}/share/${shareSlug}`
+			: null;
+
+	async function toggle(enabled: boolean) {
+		setBusy(true);
+		setError(null);
+		try {
+			const res = await apiFetch<{
+				shareEnabled: boolean;
+				shareSlug: string | null;
+			}>(`/collections/${collectionId}/share`, {
+				method: "POST",
+				body: JSON.stringify({enabled}),
+			});
+			onChange(res);
+		} catch (e) {
+			setError(e instanceof Error ? e.message : "Failed to update share");
+		} finally {
+			setBusy(false);
+		}
+	}
+
+	async function copyLink() {
+		if (!shareUrl) return;
+		try {
+			await navigator.clipboard.writeText(shareUrl);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 1500);
+		} catch {
+			setError("Couldn't copy to clipboard.");
+		}
+	}
+
+	return (
+		<section className="card-elevated relative overflow-hidden p-5 lg:col-span-3">
+			<div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-warning/15 to-transparent" />
+			<div className="relative flex flex-wrap items-start justify-between gap-3">
+				<div className="flex items-start gap-3">
+					<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-warning/15 text-warning">
+						<Share2Icon className="h-5 w-5" />
+					</div>
+					<div>
+						<p className="text-sm font-medium">Public share link</p>
+						<p className="text-xs text-muted-foreground">
+							Anyone with the link can download this collection. Turning sharing
+							off rotates the slug — old links die immediately.
+						</p>
+					</div>
+				</div>
+				<Button
+					variant={shareEnabled ? "outline" : "default"}
+					size="sm"
+					disabled={busy}
+					onClick={() => toggle(!shareEnabled)}
+				>
+					{busy ? "…" : shareEnabled ? "Disable sharing" : "Enable sharing"}
+				</Button>
+			</div>
+
+			{shareEnabled && shareUrl && (
+				<div className="relative mt-4 flex items-center gap-2">
+					<div className="flex min-w-0 flex-1 items-center gap-2 rounded-md border border-border bg-background px-3 py-2">
+						<LinkIcon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+						<code className="truncate text-xs">{shareUrl}</code>
+					</div>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={copyLink}
+						className="gap-1.5"
+					>
+						{copied ? (
+							<>
+								<CheckIcon className="h-3.5 w-3.5 text-success" />
+								Copied
+							</>
+						) : (
+							<>
+								<CopyIcon className="h-3.5 w-3.5" />
+								Copy
+							</>
+						)}
+					</Button>
+				</div>
+			)}
+
+			{error && (
+				<p className="relative mt-2 text-xs text-destructive">{error}</p>
+			)}
+		</section>
 	);
 }
 
