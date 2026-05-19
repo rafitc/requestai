@@ -1,3 +1,3 @@
-import {config} from "@pluteojs/eslint-config/react-internal";
+import {config} from "@requestai/eslint-config/react-internal";
 
 export default [...config];

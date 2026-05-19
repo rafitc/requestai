@@ -1,6 +1,6 @@
 import type {Request, Response, NextFunction} from "express";
 import {fromNodeHeaders} from "better-auth/node";
-import {auth} from "@pluteojs/better-auth";
+import {auth} from "@requestai/better-auth";
 
 import config from "@config";
 import {httpStatusCodes} from "@customTypes/networkTypes";

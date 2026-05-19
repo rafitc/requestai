@@ -107,8 +107,8 @@ export function NewsletterEmail({
 
 NewsletterEmail.PreviewProps = {
 	firstName: "John",
-	subject: "This Week in PluteoJS",
-	previewText: "Discover the latest updates and features in PluteoJS",
+	subject: "This Week in RequestAi",
+	previewText: "Discover the latest updates and features in RequestAi",
 	heroTitle: "Introducing Our Latest Features",
 	heroDescription:
 		"We have been working hard to bring you new features that will make your development experience even better. From improved performance to new integrations, there is a lot to explore in this update.",

@@ -1,5 +1,5 @@
 /**
- * @pluteojs/better-auth
+ * @requestai/better-auth
  *
  * Centralized authentication package using better-auth.
  * Provides a configured auth instance for use across multiple backend frameworks.

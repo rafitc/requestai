@@ -76,7 +76,7 @@ export function BetterAuthEmailVerificationEmail({
 	email,
 	verificationUrl,
 	expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000),
-	appName = "PluteoJS",
+	appName = "RequestAi",
 }: iBetterAuthEmailVerificationEmailProps): React.ReactElement {
 	const firstName = name ? name.split(" ")[0] : undefined;
 
@@ -133,7 +133,7 @@ BetterAuthEmailVerificationEmail.PreviewProps = {
 	email: "john.doe@example.com",
 	verificationUrl: "https://example.com/verify-email?token=abc123xyz",
 	expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-	appName: "PluteoJS",
+	appName: "RequestAi",
 } satisfies iBetterAuthEmailVerificationEmailProps;
 
 export default BetterAuthEmailVerificationEmail;

@@ -4,7 +4,7 @@
  * Configures the better-auth email handlers with the application's email service.
  * This must be called during app initialization before better-auth routes are used.
  */
-import {configureEmailHandlers, type iEmailSendOptions} from "@pluteojs/better-auth";
+import {configureEmailHandlers, type iEmailSendOptions} from "@requestai/better-auth";
 
 import config from "@config";
 import logger from "@loaders/logger";
@@ -50,7 +50,7 @@ function loadBetterAuth(): void {
 			},
 		},
 		fromAddress: config.emailService.transactionalEmail.smtpFromAddress,
-		appName: config.serviceInfo.name || "PluteoJS",
+		appName: config.serviceInfo.name || "RequestAi",
 	});
 
 	logger.info(null, "Better Auth email handlers configured");

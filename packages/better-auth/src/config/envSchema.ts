@@ -23,7 +23,31 @@ export const envSchema = z.object({
 		.default("true")
 		.transform((val) => val === "true"),
 
-	// Database (inherited from @pluteojs/database, but we reference it here)
+	// Comma-separated list of origins Better Auth will accept requests from.
+	// The configured BETTER_AUTH_BASE_URL is always trusted; this is for
+	// additional origins (e.g. a separate frontend dev server).
+	BETTER_AUTH_TRUSTED_ORIGINS: z
+		.string()
+		.optional()
+		.transform((val) =>
+			(val ?? "")
+				.split(",")
+				.map((s) => s.trim())
+				.filter(Boolean)
+		),
+
+	// Google OAuth (optional — leave both blank to disable the Google provider)
+	GOOGLE_CLIENT_ID: z.string().optional(),
+	GOOGLE_CLIENT_SECRET: z.string().optional(),
+
+	// Signup credit grant — how many free credits a new user receives
+	SIGNUP_CREDIT_GRANT: z
+		.string()
+		.default("3")
+		.transform((val) => parseInt(val, 10))
+		.pipe(z.number().int().min(0)),
+
+	// Database (inherited from @requestai/database, but we reference it here)
 	DATABASE_URL: z.string().optional(),
 });
 

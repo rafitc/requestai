@@ -1,4 +1,4 @@
-import {config} from "@pluteojs/eslint-config/express";
+import {config} from "@requestai/eslint-config/express";
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [...config];

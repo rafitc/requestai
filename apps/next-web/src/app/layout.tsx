@@ -21,10 +21,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-	title: "PluteoJS",
+	title: "RequestAi",
 	description: "A Full-Stack TypeScript Template for Scalable Applications",
 	appleWebApp: {
-		title: "PluteoJS",
+		title: "RequestAi",
 	},
 };
 
@@ -34,7 +34,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" className="dark">
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>

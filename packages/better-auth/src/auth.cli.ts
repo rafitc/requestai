@@ -7,7 +7,7 @@
  *
  * Use relative imports only.
  */
-import {db} from "@pluteojs/database";
+import {db} from "@requestai/database";
 import {betterAuth} from "better-auth";
 import {drizzleAdapter} from "better-auth/adapters/drizzle";
 import {betterAuthSharedConfig, corePlugins, devPlugins} from "./auth.shared.js";

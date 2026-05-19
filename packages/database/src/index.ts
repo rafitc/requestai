@@ -1,7 +1,7 @@
 /**
- * @pluteojs/database
+ * @requestai/database
  *
- * Drizzle ORM database package for the PluteoJS monorepo.
+ * Drizzle ORM database package for the RequestAi monorepo.
  */
 
 // Re-export common Drizzle query operators for convenience
@@ -43,7 +43,7 @@ export {db, pool, type Database} from "@/client";
 // Schema exports
 export * from "@/schema";
 
-// Config (default export - use `import config from "@pluteojs/database/config"` if needed)
+// Config (default export - use `import config from "@requestai/database/config"` if needed)
 export {default as config} from "@/config";
 
 // Constants

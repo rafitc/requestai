@@ -1,5 +1,5 @@
 {
-	"extends": "@pluteojs/typescript-config/nextjs.json",
+	"extends": "@requestai/typescript-config/nextjs.json",
 	"compilerOptions": {
 		"target": "ES2017",
 		"lib": ["dom", "dom.iterable", "esnext"],

@@ -15,6 +15,8 @@ function loadConfig() {
 
 	const env = result.data;
 
+	const googleEnabled = Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET);
+
 	return {
 		betterAuth: {
 			secret: env.BETTER_AUTH_SECRET,
@@ -26,6 +28,14 @@ function loadConfig() {
 			},
 			enableResponseEnvelope: env.BETTER_AUTH_ENABLE_RESPONSE_ENVELOPE,
 			allowedEndpoints: defaultAllowedEndpoints,
+			google: googleEnabled
+				? {
+						clientId: env.GOOGLE_CLIENT_ID as string,
+						clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+					}
+				: null,
+			signupCreditGrant: env.SIGNUP_CREDIT_GRANT,
+			trustedOrigins: env.BETTER_AUTH_TRUSTED_ORIGINS,
 		},
 	};
 }

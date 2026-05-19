@@ -6,7 +6,7 @@
  * Use relative imports only.
  */
 import type {BetterAuthOptions} from "better-auth";
-import {jwt, bearer, openAPI, organization} from "better-auth/plugins";
+import {jwt, bearer, openAPI, organization, emailOTP} from "better-auth/plugins";
 import type {DrizzleAdapterConfig} from "better-auth/adapters/drizzle";
 
 // Import using relative paths (NO path aliases!)
@@ -30,6 +30,17 @@ export const corePlugins = [
 	// Bearer token plugin with signature requirement
 	bearer({
 		requireSignature: true,
+	}),
+
+	// Email + OTP sign-in (primary auth method for RequestAi).
+	// Wrap the handler so better-auth's GenericEndpointContext isn't passed
+	// through — handleSendOTP only knows about a fetch-style Request.
+	emailOTP({
+		sendVerificationOTP: async (data) => {
+			await emailHandlers.handleSendOTP(data);
+		},
+		otpLength: 6,
+		expiresIn: 600,
 	}),
 
 	// Organization plugin for multi-tenancy
@@ -75,17 +86,15 @@ export const devPlugins = [openAPI()];
  * This is used by both the runtime and CLI configurations.
  */
 export const betterAuthSharedConfig: BetterAuthSharedConfig = {
-	// Email and password authentication
+	// Email/password is disabled — RequestAi uses email-OTP + Google only.
 	emailAndPassword: {
-		enabled: true,
-		autoSignIn: true,
-		minPasswordLength: 8,
+		enabled: false,
 	},
 
-	// Email verification settings
+	// Email verification settings (still used for invitation flows)
 	emailVerification: {
 		sendVerificationEmail: emailHandlers.handleSendVerificationEmail,
-		sendOnSignUp: true,
+		sendOnSignUp: false,
 	},
 
 	// Drizzle adapter configuration

@@ -8,7 +8,7 @@ import {
 	renderBetterAuthEmailVerificationEmail,
 	renderBetterAuthPasswordResetEmail,
 	renderOrganizationInvitationEmail,
-} from "@pluteojs/email-templates";
+} from "@requestai/email-templates";
 
 import config from "../config/index.js";
 import type {
@@ -142,7 +142,7 @@ async function handleSendVerificationEmail(
 			email: data.user.email,
 			verificationUrl: data.url,
 			expiresAt,
-			appName: cfg.appName || "PluteoJS",
+			appName: cfg.appName || "RequestAi",
 		});
 
 		// Render plain text version
@@ -152,12 +152,12 @@ async function handleSendVerificationEmail(
 				email: data.user.email,
 				verificationUrl: data.url,
 				expiresAt,
-				appName: cfg.appName || "PluteoJS",
+				appName: cfg.appName || "RequestAi",
 			},
 			{plainText: true}
 		);
 
-		const subject = `Verify your email address for ${cfg.appName || "PluteoJS"}`;
+		const subject = `Verify your email address for ${cfg.appName || "RequestAi"}`;
 
 		// Send email
 		await cfg.sender({
@@ -225,7 +225,7 @@ async function handleOrgInviteEmail(
 			invitationUrl,
 			expiresAt: data.invitation.expiresAt,
 			organizationLogo: data.organization.logo || undefined,
-			appName: cfg.appName || "PluteoJS",
+			appName: cfg.appName || "RequestAi",
 		});
 
 		// Render plain text version
@@ -238,7 +238,7 @@ async function handleOrgInviteEmail(
 				invitationUrl,
 				expiresAt: data.invitation.expiresAt,
 				organizationLogo: data.organization.logo || undefined,
-				appName: cfg.appName || "PluteoJS",
+				appName: cfg.appName || "RequestAi",
 			},
 			{plainText: true}
 		);
@@ -312,7 +312,7 @@ async function handlePasswordResetEmail(
 			email: data.user.email,
 			resetUrl: data.url,
 			expiresAt,
-			appName: cfg.appName || "PluteoJS",
+			appName: cfg.appName || "RequestAi",
 		});
 
 		// Render plain text version
@@ -322,12 +322,12 @@ async function handlePasswordResetEmail(
 				email: data.user.email,
 				resetUrl: data.url,
 				expiresAt,
-				appName: cfg.appName || "PluteoJS",
+				appName: cfg.appName || "RequestAi",
 			},
 			{plainText: true}
 		);
 
-		const subject = `Reset your password for ${cfg.appName || "PluteoJS"}`;
+		const subject = `Reset your password for ${cfg.appName || "RequestAi"}`;
 
 		// Send email
 		await cfg.sender({
@@ -363,12 +363,58 @@ async function handlePasswordResetEmail(
 }
 
 /**
+ * Handle sending an email containing a one-time passcode for sign-in,
+ * verification, or password reset.
+ *
+ * The OTP plugin in better-auth calls this with `{email, otp, type}`. We
+ * dispatch a plain transactional email with the code; no React template yet.
+ *
+ * @param data - OTP payload from better-auth ({email, otp, type})
+ * @param request - Optional request object for context
+ */
+async function handleSendOTP(
+	data: {email: string; otp: string; type: "sign-in" | "email-verification" | "forget-password"},
+	request?: Request
+): Promise<void> {
+	const cfg = getEmailConfig();
+	const logger = cfg.logger || consoleLogger;
+	const requestId = getRequestId(request);
+
+	const subjectByType: Record<typeof data.type, string> = {
+		"sign-in": `Your sign-in code for ${cfg.appName || "RequestAi"}`,
+		"email-verification": `Verify your email for ${cfg.appName || "RequestAi"}`,
+		"forget-password": `Your password reset code for ${cfg.appName || "RequestAi"}`,
+	};
+
+	const subject = subjectByType[data.type];
+	const text = `Your one-time code is: ${data.otp}\n\nIt expires in 10 minutes. If you didn't request this, you can ignore this email.`;
+	const html = `<p>Your one-time code is:</p><p style="font-size:24px;font-weight:bold;letter-spacing:4px">${data.otp}</p><p>It expires in 10 minutes. If you didn't request this, you can ignore this email.</p>`;
+
+	try {
+		await cfg.sender({
+			from: cfg.fromAddress,
+			to: data.email,
+			subject,
+			html,
+			text,
+			metadata: {type: `otp_${data.type}`, email: data.email, requestId},
+		});
+
+		logger.info(requestId, "OTP email sent", {email: data.email, type: data.type});
+	} catch (error) {
+		logger.error(requestId, "Failed to send OTP email", error);
+		throw error;
+	}
+}
+
+/**
  * Email handlers for better-auth callbacks.
  */
 const emailHandlers = {
 	handleSendVerificationEmail,
 	handleOrgInviteEmail,
 	handlePasswordResetEmail,
+	handleSendOTP,
 };
 
 export default emailHandlers;

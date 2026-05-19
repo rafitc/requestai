@@ -141,7 +141,7 @@ function generateHubPage(): string {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>PluteoJS API Documentation</title>
+	<title>RequestAi API Documentation</title>
 	<style>
 		* {
 			box-sizing: border-box;
@@ -174,7 +174,7 @@ function generateHubPage(): string {
 					font-size: 32px;
 					font-weight: 700;
 					color: #111827;
-				">PluteoJS API Documentation</h1>
+				">RequestAi API Documentation</h1>
 				<p style="
 					margin: 0;
 					color: #6b7280;
@@ -193,7 +193,7 @@ function generateHubPage(): string {
 				font-size: 14px;
 			">
 				<p style="margin: 0;">
-					Built with <a href="https://github.com/PluteoJS/pluteojs-template" style="color: #2563eb; text-decoration: none;">PluteoJS</a>
+					Built with <a href="https://github.com/RequestAi/requestai" style="color: #2563eb; text-decoration: none;">RequestAi</a>
 				</p>
 			</footer>
 		</div>

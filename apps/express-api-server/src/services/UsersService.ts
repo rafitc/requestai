@@ -1,4 +1,4 @@
-import {db, eq, users} from "@pluteojs/database";
+import {db, eq, users} from "@requestai/database";
 
 import logger from "@loaders/logger";
 

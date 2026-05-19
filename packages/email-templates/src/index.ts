@@ -1,7 +1,7 @@
 /**
- * @pluteojs/email-templates
+ * @requestai/email-templates
  *
- * React-email based email templates and rendering utilities for the PluteoJS monorepo.
+ * React-email based email templates and rendering utilities for the RequestAi monorepo.
  * This package exports render utilities and types only - React components are internal.
  */
 

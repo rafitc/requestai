@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {iExampleState, REDUCER_NAME} from "./Types";
 
 const initialState: iExampleState = {
-	message: "Hello from PluteoJS",
+	message: "Hello from RequestAi",
 };
 
 export const exampleSlice = createSlice({

@@ -1,9 +1,9 @@
 {
-	"name": "pluteo-js-template",
+	"name": "requestai-js-template",
 	"private": true,
 	"version": "0.0.1",
-	"description": "PluteoJS Turborepo Template",
-	"repository": "git@gitlab.com:PluteoJS/pluteojs-template.git",
+	"description": "RequestAi Turborepo Template",
+	"repository": "git@gitlab.com:RequestAi/requestai.git",
 	"author": "Muhammad Swalah A A <swalah@heedlabs.com>",
 	"scripts": {
 		"preinstall": "node ./tooling/monorepo-utils/enforce-pnpm.mjs",
@@ -14,8 +14,8 @@
 		"lint": "turbo run lint",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
 		"check-types": "turbo run check-types",
-		"release:compute-version": "pnpm --filter @pluteojs/tooling-release-versioning compute-version",
-		"release:fix-branch": "pnpm --filter @pluteojs/tooling-release-versioning fix-release-branch"
+		"release:compute-version": "pnpm --filter @requestai/tooling-release-versioning compute-version",
+		"release:fix-branch": "pnpm --filter @requestai/tooling-release-versioning fix-release-branch"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,json,md}": [

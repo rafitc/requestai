@@ -8,8 +8,8 @@ export default defineConfig({
 	clean: true,
 	sourcemap: true,
 	external: [
-		"@pluteojs/database",
-		"@pluteojs/email-templates",
+		"@requestai/database",
+		"@requestai/email-templates",
 		"better-auth",
 		"better-auth/plugins",
 		"better-auth/plugins/access",

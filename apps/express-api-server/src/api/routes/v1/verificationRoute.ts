@@ -1,7 +1,7 @@
 import type {Router, Response, NextFunction} from "express";
 import {z} from "zod";
 
-import {emailVerificationRequestBodySchema} from "@pluteojs/api-types";
+import {emailVerificationRequestBodySchema} from "@requestai/api-types";
 
 import {validateBody} from "@validations/zodValidation";
 import logger from "@loaders/logger";

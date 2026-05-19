@@ -14,7 +14,7 @@ import type {InternalAxiosRequestConfig} from "axios";
  * @param store
  * @param apiServer
  */
-function PluteoJSServerAxiosRequestInterceptors(
+function RequestAiServerAxiosRequestInterceptors(
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	store: StoreType | null = null,
 	apiServer: AxiosInstance
@@ -56,4 +56,4 @@ function PluteoJSServerAxiosRequestInterceptors(
 	});
 }
 
-export default PluteoJSServerAxiosRequestInterceptors;
+export default RequestAiServerAxiosRequestInterceptors;

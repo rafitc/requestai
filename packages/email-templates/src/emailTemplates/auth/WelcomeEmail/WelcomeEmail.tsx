@@ -18,7 +18,7 @@ const paragraphStyle: React.CSSProperties = {
 
 export function WelcomeEmail({
 	firstName,
-	appName = "PluteoJS",
+	appName = "RequestAi",
 }: iWelcomeEmailProps): React.ReactElement {
 	return (
 		<Layout preview={`Welcome to ${appName}, ${firstName}!`}>
@@ -38,7 +38,7 @@ export function WelcomeEmail({
 
 WelcomeEmail.PreviewProps = {
 	firstName: "John",
-	appName: "PluteoJS",
+	appName: "RequestAi",
 } satisfies iWelcomeEmailProps;
 
 export default WelcomeEmail;

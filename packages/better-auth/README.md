@@ -1,6 +1,6 @@
-# @pluteojs/better-auth
+# @requestai/better-auth
 
-Centralized authentication package for the PluteoJS monorepo, built on [Better Auth](https://www.better-auth.com/).
+Centralized authentication package for the RequestAi monorepo, built on [Better Auth](https://www.better-auth.com/).
 
 ## Table of Contents
 
@@ -54,7 +54,7 @@ This package provides a pre-configured Better Auth instance with:
 This package is part of the monorepo and is already configured. To use it in an app:
 
 ```typescript
-import { auth, config } from "@pluteojs/better-auth";
+import { auth, config } from "@requestai/better-auth";
 ```
 
 ## Configuration
@@ -92,7 +92,7 @@ Email handlers must be configured before using authentication features that send
 
 ```typescript
 // apps/express-api-server/src/loaders/betterAuthLoader.ts
-import { configureEmailHandlers, type iEmailSendOptions } from "@pluteojs/better-auth";
+import { configureEmailHandlers, type iEmailSendOptions } from "@requestai/better-auth";
 import config from "@config";
 import logger from "@loaders/logger";
 import emailServiceUtil from "@util/emailServiceUtil";
@@ -117,7 +117,7 @@ export default function loadBetterAuth(): void {
       error: (requestId, message, error) => logger.error(requestId, message, error),
     },
     fromAddress: config.emailService.transactionalEmail.smtpFromAddress,
-    appName: config.serviceInfo.name || "PluteoJS",
+    appName: config.serviceInfo.name || "RequestAi",
   });
 
   logger.info(null, "Better Auth email handlers configured");
@@ -148,7 +148,7 @@ const loader = async ({ expressApp }) => {
 // apps/express-api-server/src/api/routes/betterAuthRoute.ts
 import type { Router } from "express";
 import { fromNodeHeaders } from "better-auth/node";
-import { auth, isEndpointAllowed } from "@pluteojs/better-auth";
+import { auth, isEndpointAllowed } from "@requestai/better-auth";
 
 export default (route: Router): void => {
   route.all(/^\/auth\/.*/, async (req, res) => {
@@ -182,7 +182,7 @@ export default (route: Router): void => {
 // apps/express-api-server/src/api/middlewares/authorizationMiddleware.ts
 import type { Request, Response, NextFunction } from "express";
 import { fromNodeHeaders } from "better-auth/node";
-import { auth } from "@pluteojs/better-auth";
+import { auth } from "@requestai/better-auth";
 
 export async function isAuthorized(req: Request, res: Response, next: NextFunction) {
   const session = await auth.api.getSession({
@@ -206,7 +206,7 @@ export async function isAuthorized(req: Request, res: Response, next: NextFuncti
 The package includes a security allowlist to prevent exposing unintended Better Auth endpoints:
 
 ```typescript
-import { isEndpointAllowed, defaultAllowedEndpoints } from "@pluteojs/better-auth";
+import { isEndpointAllowed, defaultAllowedEndpoints } from "@requestai/better-auth";
 
 // Check if endpoint is allowed
 if (!isEndpointAllowed("/auth/sign-in/email", "POST")) {
@@ -317,7 +317,7 @@ const admin = accessControl.newRole({
 ### Using Access Control
 
 ```typescript
-import { accessControl, roles } from "@pluteojs/better-auth";
+import { accessControl, roles } from "@requestai/better-auth";
 
 // Check if role has permission
 const canCreate = roles.admin.authorize({
@@ -361,7 +361,7 @@ This generates the schema to `packages/database/src/schema/betterAuth/betterAuth
 
 1. Generate schema:
    ```bash
-   pnpm --filter @pluteojs/better-auth better-auth:generate
+   pnpm --filter @requestai/better-auth better-auth:generate
    ```
 
 2. Manually update the generated schema (if needed):
@@ -370,12 +370,12 @@ This generates the schema to `packages/database/src/schema/betterAuth/betterAuth
 
 3. Generate migration with Drizzle:
    ```bash
-   pnpm --filter @pluteojs/database db:generate
+   pnpm --filter @requestai/database db:generate
    ```
 
 4. Apply migration:
    ```bash
-   pnpm --filter @pluteojs/database db:migrate
+   pnpm --filter @requestai/database db:migrate
    ```
 
 ## Architecture
@@ -519,7 +519,7 @@ Ensure you're using relative imports in `auth.cli.ts` and `auth.shared.ts`. The 
 If you get type errors after modifying plugins:
 
 1. Regenerate the schema: `pnpm better-auth:generate`
-2. Rebuild the package: `pnpm --filter @pluteojs/better-auth build`
+2. Rebuild the package: `pnpm --filter @requestai/better-auth build`
 3. Restart your TypeScript server
 
 ### Organization context not available
@@ -538,5 +538,5 @@ if (!session?.session.activeOrganizationId) {
 
 - [Better Auth Documentation](https://www.better-auth.com/docs)
 - [Drizzle ORM](https://orm.drizzle.team/)
-- [@pluteojs/database](../database/README.md)
-- [@pluteojs/email-templates](../email-templates/README.md)
+- [@requestai/database](../database/README.md)
+- [@requestai/email-templates](../email-templates/README.md)

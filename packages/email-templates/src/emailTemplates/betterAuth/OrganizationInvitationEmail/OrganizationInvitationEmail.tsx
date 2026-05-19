@@ -123,7 +123,7 @@ export function OrganizationInvitationEmail({
 	invitationUrl,
 	expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000), // Default 48 hours
 	organizationLogo,
-	appName = "PluteoJS",
+	appName = "RequestAi",
 }: iOrganizationInvitationEmailProps): React.ReactElement {
 	return (
 		<Layout preview={`You've been invited to join ${organizationName}`}>
@@ -208,7 +208,7 @@ OrganizationInvitationEmail.PreviewProps = {
 	invitationUrl: "https://example.com/accept-invitation/abc123",
 	expiresAt: new Date(Date.now() + 48 * 60 * 60 * 1000),
 	organizationLogo: undefined,
-	appName: "PluteoJS",
+	appName: "RequestAi",
 } satisfies iOrganizationInvitationEmailProps;
 
 export default OrganizationInvitationEmail;

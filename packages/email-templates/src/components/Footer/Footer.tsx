@@ -30,8 +30,8 @@ const linkStyle: React.CSSProperties = {
 };
 
 export function Footer({
-	companyName = "PluteoJS",
-	supportEmail = "support@pluteojs.com",
+	companyName = "RequestAi",
+	supportEmail = "support@requestai.com",
 }: iFooterProps): React.ReactElement {
 	return (
 		<Section style={footerStyle}>

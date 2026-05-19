@@ -1,9 +1,9 @@
 import {
 	renderEmailVerificationEmail,
 	renderWelcomeEmail,
-} from "@pluteojs/email-templates";
+} from "@requestai/email-templates";
 
-import {emailLogs, type DBTransaction} from "@pluteojs/database";
+import {emailLogs, type DBTransaction} from "@requestai/database";
 
 import logger from "@loaders/logger";
 import config from "@config";
@@ -28,15 +28,15 @@ export default class EmailService {
 
 		const senderAddress =
 			config.emailService.transactionalEmail.smtpFromAddress;
-		const subject = "Welcome to PluteoJS";
+		const subject = "Welcome to RequestAi";
 
 		// Render HTML and plain text versions using react-email templates
 		const htmlBody = await renderWelcomeEmail({
 			firstName,
-			appName: "PluteoJS",
+			appName: "RequestAi",
 		});
 		const textBody = await renderWelcomeEmail(
-			{firstName, appName: "PluteoJS"},
+			{firstName, appName: "RequestAi"},
 			{plainText: true}
 		);
 
@@ -87,7 +87,7 @@ export default class EmailService {
 		dbTx: DBTransaction
 	): Promise<boolean> {
 		const senderAddress = config.emailService.mailgun.senderId;
-		const subject = "Verify Email | PluteoJS";
+		const subject = "Verify Email | RequestAi";
 
 		// Render HTML and plain text versions using react-email templates
 		const htmlBody = await renderEmailVerificationEmail({

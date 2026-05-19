@@ -27,6 +27,13 @@ const marketingEmailTransporter = nodemailer.createTransport({
 
 /**
  * Builds the mail options object.
+ *
+ * When `EMAIL_DEV_REDIRECT_TO` is set (dev-only knob exposed via
+ * `config.emailService.devRedirectTo`), every outbound message is rerouted
+ * to that single inbox regardless of the real recipient. The original
+ * recipient is preserved in the subject so you can still tell whose OTP
+ * landed in your inbox while clicking through the signup flow with throwaway
+ * test emails.
  */
 function buildMailOptions(
 	from: string,
@@ -37,12 +44,18 @@ function buildMailOptions(
 	textBody: NullableString,
 	htmlBody: NullableString
 ): nodemailer.SendMailOptions {
+	const redirectTo = config.emailService.devRedirectTo;
+	const effectiveTo = redirectTo || to;
+	const effectiveSubject = redirectTo ? `[for ${to}] ${subject}` : subject;
+	const effectiveCc = redirectTo ? "" : cc || "";
+	const effectiveBcc = redirectTo ? "" : bcc || "";
+
 	const mailOptions: nodemailer.SendMailOptions = {
 		from,
-		to,
-		cc: cc || "",
-		bcc: bcc || "",
-		subject,
+		to: effectiveTo,
+		cc: effectiveCc,
+		bcc: effectiveBcc,
+		subject: effectiveSubject,
 		text: textBody || "",
 		html: htmlBody || "",
 	};

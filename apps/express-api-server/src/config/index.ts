@@ -80,6 +80,21 @@ export default {
 		},
 	},
 
+	// CORS configuration.
+	//
+	// Allowed origins come from a comma-separated env var. When credentials
+	// are enabled the wildcard `*` is invalid; specify each origin explicitly.
+	// `set-auth-token` is exposed so the browser can read Better Auth's bearer
+	// token from the response header on sign-in.
+	cors: {
+		allowedOrigins: (process.env.CORS_ALLOWED_ORIGINS || "http://localhost:4020")
+			.split(",")
+			.map((value) => {return value.trim();})
+			.filter(Boolean),
+		credentials: process.env.CORS_CREDENTIALS !== "false",
+		exposedHeaders: ["set-auth-token"],
+	},
+
 	// database config
 	database: {
 		host: process.env.DATABASE_HOST,
@@ -105,7 +120,9 @@ export default {
 		transactionalEmail: {
 			smtpHost: process.env.EMAIL_SERVICE_TRANSACTIONAL_SMTP_HOST,
 			smtpPort: Number(process.env.EMAIL_SERVICE_TRANSACTIONAL_SMTP_PORT),
-			smtpSecure: Boolean(process.env.EMAIL_SERVICE_TRANSACTIONAL_SMTP_SECURE),
+			smtpSecure: typeUtil.parseBooleanFromString(
+				process.env.EMAIL_SERVICE_TRANSACTIONAL_SMTP_SECURE
+			),
 			smtpUsername: process.env.EMAIL_SERVICE_TRANSACTIONAL_SMTP_USERNAME,
 			smtpFromAddress:
 				process.env.EMAIL_SERVICE_TRANSACTIONAL_SMTP_FROM_ADDRESS || "",
@@ -115,11 +132,19 @@ export default {
 		marketingEmail: {
 			smtpHost: process.env.EMAIL_SERVICE_MARKETING_SMTP_HOST,
 			smtpPort: Number(process.env.EMAIL_SERVICE_MARKETING_SMTP_PORT),
-			smtpSecure: Boolean(process.env.EMAIL_SERVICE_MARKETING_SMTP_SECURE),
+			smtpSecure: typeUtil.parseBooleanFromString(
+				process.env.EMAIL_SERVICE_MARKETING_SMTP_SECURE
+			),
 			smtpUsername: process.env.EMAIL_SERVICE_MARKETING_SMTP_USERNAME,
 			smtpFromAddress: process.env.EMAIL_SERVICE_MARKETING_SMTP_FROM_ADDRESS,
 			smtpPassword: process.env.EMAIL_SERVICE_MARKETING_SMTP_PASSWORD,
 		},
+
+		// Dev-only: when set, every outbound email is redirected to this
+		// address regardless of the original recipient. Useful when you want
+		// every signup OTP to land in the same inbox while clicking through
+		// the flow with different test emails.
+		devRedirectTo: process.env.EMAIL_DEV_REDIRECT_TO || "",
 	},
 
 	verificationConfig: {
@@ -141,6 +166,6 @@ export default {
 		enableResponseEnvelope:
 			process.env.BETTER_AUTH_ENABLE_RESPONSE_ENVELOPE !== "false",
 		// Allowed endpoints can be customized via environment or left as default
-		allowedEndpoints: {} as Record<string, string[]>, // Empty = use defaults from @pluteojs/better-auth
+		allowedEndpoints: {} as Record<string, string[]>, // Empty = use defaults from @requestai/better-auth
 	},
 };

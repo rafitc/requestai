@@ -207,8 +207,22 @@ const loadExpress = ({app}: {app: express.Application}): void => {
 	// Use helmet
 	app.use(helmet());
 
-	// Enable Cross Origin Resource Sharing to all origins by default
-	app.use(cors());
+	// CORS. Origins, credentials, and exposed headers all come from config.
+	// `credentials: true` requires a non-wildcard origin, so we check the
+	// request's Origin against an explicit allowlist.
+	const allowedOriginSet = new Set(config.cors.allowedOrigins);
+	app.use(
+		cors({
+			origin: (origin, callback) => {
+				// Non-browser callers (curl, server-to-server) have no Origin — let them through.
+				if (!origin) {return callback(null, true);}
+				if (allowedOriginSet.has(origin)) {return callback(null, true);}
+				return callback(new Error(`Origin not allowed by CORS: ${origin}`));
+			},
+			credentials: config.cors.credentials,
+			exposedHeaders: config.cors.exposedHeaders,
+		})
+	);
 
 	// adds a unique id to each request
 	app.use(addRequestId);

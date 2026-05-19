@@ -1,6 +1,6 @@
 import type {Router, Request, Response} from "express";
 import {fromNodeHeaders} from "better-auth/node";
-import {auth, isEndpointAllowed} from "@pluteojs/better-auth";
+import {auth, isEndpointAllowed} from "@requestai/better-auth";
 
 import config from "@config";
 import logger from "@loaders/logger";

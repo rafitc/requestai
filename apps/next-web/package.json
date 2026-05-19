@@ -1,5 +1,5 @@
 {
-	"name": "@pluteojs/next-web",
+	"name": "@requestai/next-web",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
@@ -10,10 +10,11 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@pluteojs/api-types": "workspace:*",
+		"@requestai/api-types": "workspace:*",
 		"@radix-ui/react-slot": "^1.2.4",
 		"@reduxjs/toolkit": "^2.11.1",
 		"axios": "1.14.0",
+		"better-auth": "^1.2.8",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"lucide-react": "^0.556.0",
@@ -27,8 +28,8 @@
 		"uuid": "^13.0.0"
 	},
 	"devDependencies": {
-		"@pluteojs/eslint-config": "workspace:*",
-		"@pluteojs/typescript-config": "workspace:*",
+		"@requestai/eslint-config": "workspace:*",
+		"@requestai/typescript-config": "workspace:*",
 		"@tailwindcss/postcss": "^4.1.17",
 		"@types/node": "^24",
 		"@types/react": "^19.2.7",

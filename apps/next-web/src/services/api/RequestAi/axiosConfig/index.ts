@@ -3,8 +3,8 @@ import axios from "axios";
 import type {StoreType} from "@/store/index";
 
 import AxiosResponseInterceptors from "@/services/api/commonInterceptors/AxiosResponseInterceptors";
-import PluteoJSServerAxiosRequestInterceptors from "@/services/api/PluteoJS/axiosConfig/PluteoJSServerAxiosRequestInterceptors";
-import PluteoJSServerAxiosResponseInterceptors from "@/services/api/PluteoJS/axiosConfig/PluteoJSServerAxiosResponseInterceptors";
+import RequestAiServerAxiosRequestInterceptors from "@/services/api/RequestAi/axiosConfig/RequestAiServerAxiosRequestInterceptors";
+import RequestAiServerAxiosResponseInterceptors from "@/services/api/RequestAi/axiosConfig/RequestAiServerAxiosResponseInterceptors";
 
 import {axiosRequestConfig} from "./AxiosServiceConstants";
 
@@ -30,11 +30,11 @@ export const injectStore = (store: StoreType): void => {
 	// registering common axios response interceptors
 	AxiosResponseInterceptors(store, apiServer);
 
-	// registering axios request interceptors specific to PluteoJS Server
-	PluteoJSServerAxiosRequestInterceptors(store, apiServer);
+	// registering axios request interceptors specific to RequestAi Server
+	RequestAiServerAxiosRequestInterceptors(store, apiServer);
 
-	// registering axios response interceptors specific to PluteoJS Server
-	PluteoJSServerAxiosResponseInterceptors(store, apiServer);
+	// registering axios response interceptors specific to RequestAi Server
+	RequestAiServerAxiosResponseInterceptors(store, apiServer);
 };
 
 export {apiServer};

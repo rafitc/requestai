@@ -11,6 +11,20 @@ export const defaultAllowedEndpoints: Record<string, string[]> = {
 	"/auth/sign-out": ["POST"],
 	"/auth/get-session": ["GET"],
 
+	// Email OTP (primary sign-in method for RequestAi)
+	"/auth/email-otp/send-verification-otp": ["POST"],
+	"/auth/email-otp/verify-email": ["POST"],
+	"/auth/sign-in/email-otp": ["POST"],
+	"/auth/forget-password/email-otp": ["POST"],
+	"/auth/email-otp/reset-password": ["POST"],
+	"/auth/email-otp/check-verification-otp": ["POST"],
+
+	// Social sign-in (Google)
+	"/auth/sign-in/social": ["POST"],
+	"/auth/callback/*": ["GET", "POST"],
+	"/auth/oauth-proxy-callback": ["GET", "POST"],
+	"/auth/oauth/*": ["GET", "POST"],
+
 	// OpenAPI documentation (dev only - better-auth built-in)
 	"/auth/reference": ["GET"],
 	"/auth/open-api/*": ["GET"],

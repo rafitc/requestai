@@ -1,5 +1,5 @@
 {
-	"name": "@pluteojs/better-auth",
+	"name": "@requestai/better-auth",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -29,20 +29,20 @@
 		"better-auth:generate": "pnpm dlx @better-auth/cli generate --config ./src/auth.cli.ts --output ../database/src/schema/betterAuth/betterAuth.schema.ts --yes"
 	},
 	"dependencies": {
-		"@pluteojs/database": "workspace:*",
-		"@pluteojs/email-templates": "workspace:*",
+		"@requestai/database": "workspace:*",
+		"@requestai/email-templates": "workspace:*",
 		"@react-email/render": "^1.0.3",
 		"better-auth": "^1.2.8",
 		"zod": "^4.3.5"
 	},
 	"devDependencies": {
-		"@pluteojs/eslint-config": "workspace:*",
-		"@pluteojs/typescript-config": "workspace:*",
+		"@requestai/eslint-config": "workspace:*",
+		"@requestai/typescript-config": "workspace:*",
 		"tsup": "^8.4.0",
 		"typescript": "^5.9.2"
 	},
 	"peerDependencies": {
-		"@pluteojs/database": "workspace:*"
+		"@requestai/database": "workspace:*"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [

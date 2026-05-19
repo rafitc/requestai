@@ -1,11 +1,11 @@
 import {Img, Section} from "@react-email/components";
 
 /**
- * PluteoJS logo URL from the official brand-kit repository.
+ * RequestAi logo URL from the official brand-kit repository.
  * Using the white background version for maximum email client compatibility.
  */
 const DEFAULT_LOGO_URL =
-	"https://raw.githubusercontent.com/PluteoJS/brand-kit/main/pluteo-js-logo-white-bg.png";
+	"https://raw.githubusercontent.com/RequestAi/brand-kit/main/requestai-js-logo-white-bg.png";
 
 interface iHeaderProps {
 	logoUrl?: string;
@@ -24,7 +24,7 @@ const logoStyle: React.CSSProperties = {
 
 export function Header({
 	logoUrl = DEFAULT_LOGO_URL,
-	appName = "PluteoJS",
+	appName = "RequestAi",
 }: iHeaderProps): React.ReactElement {
 	return (
 		<Section style={headerStyle}>

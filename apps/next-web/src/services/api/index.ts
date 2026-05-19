@@ -1,6 +1,6 @@
 import type {StoreType} from "@/store/index";
 
-import {injectStore as PluteoJSInjectStore} from "@/services/api/PluteoJS";
+import {injectStore as RequestAiInjectStore} from "@/services/api/RequestAi";
 
 /**
  * Injects redux-store to the local variable reduxStore which gets used
@@ -13,5 +13,5 @@ import {injectStore as PluteoJSInjectStore} from "@/services/api/PluteoJS";
  */
 
 export const injectStore = (store: StoreType): void => {
-	PluteoJSInjectStore(store);
+	RequestAiInjectStore(store);
 };

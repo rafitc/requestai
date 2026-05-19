@@ -30,7 +30,7 @@ tooling/
 ├── ci-github/             # (future) GitHub Actions helpers
 ```
 
-Package names: `@pluteojs/tooling-<domain>-<specific>`
+Package names: `@requestai/tooling-<domain>-<specific>`
 
 ## Current Packages
 
@@ -57,7 +57,7 @@ Monorepo management utilities.
 ## Adding New Tooling
 
 1. Create a new directory: `tooling/<domain>-<specific>/`
-2. Add `package.json` with name `@pluteojs/tooling-<domain>-<specific>`
+2. Add `package.json` with name `@requestai/tooling-<domain>-<specific>`
 3. Set `"private": true` (tooling packages are not published)
 4. Add scripts to root `package.json` if needed
 5. Run `pnpm install` to link the new package

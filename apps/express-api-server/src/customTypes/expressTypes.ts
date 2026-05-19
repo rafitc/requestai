@@ -1,6 +1,6 @@
 import type {Request, Response as ExpressResponse} from "express";
 
-import type {ExtendedSession, ExtendedUser} from "@pluteojs/better-auth";
+import type {ExtendedSession, ExtendedUser} from "@requestai/better-auth";
 
 import type {iResponseError} from "./responseTypes";
 

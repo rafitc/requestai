@@ -1,5 +1,5 @@
 {
-	"name": "@pluteojs/api-types",
+	"name": "@requestai/api-types",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -28,8 +28,8 @@
 		]
 	},
 	"devDependencies": {
-		"@pluteojs/eslint-config": "workspace:*",
-		"@pluteojs/typescript-config": "workspace:*",
+		"@requestai/eslint-config": "workspace:*",
+		"@requestai/typescript-config": "workspace:*",
 		"tsup": "^8.4.0",
 		"typescript": "^5.9.2"
 	}

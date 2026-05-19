@@ -1,5 +1,5 @@
 {
-	"name": "@pluteojs/tooling-monorepo-utils",
+	"name": "@requestai/tooling-monorepo-utils",
 	"version": "0.0.1",
 	"private": true,
 	"type": "module",

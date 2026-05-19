@@ -1,0 +1,1 @@
+export {registerGenerationWorker} from "./GenerationWorker";

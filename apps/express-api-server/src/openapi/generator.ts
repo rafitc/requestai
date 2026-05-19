@@ -14,9 +14,9 @@ export function generateOpenApiDocument(): ReturnType<OpenApiGeneratorV31["gener
 	return generator.generateDocument({
 		openapi: "3.1.0",
 		info: {
-			title: "PluteoJS Express API",
+			title: "RequestAi Express API",
 			version: "0.0.1",
-			description: "Express API Server built with PluteoJS template",
+			description: "Express API Server built with RequestAi template",
 		},
 		servers: [
 			{

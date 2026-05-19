@@ -1,6 +1,6 @@
 import type {Router, Request, Response, NextFunction} from "express";
 
-import {userResponseSchema} from "@pluteojs/api-types";
+import {userResponseSchema} from "@requestai/api-types";
 
 import {isAuthorized} from "@api/middlewares/authorizationMiddleware";
 import logger from "@loaders/logger";

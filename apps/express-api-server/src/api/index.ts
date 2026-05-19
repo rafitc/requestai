@@ -1,6 +1,7 @@
 import {Router} from "express";
 
 import {apiVersioningMiddleware} from "@api/middlewares";
+import authRoute from "@api/routes/v1/authRoute";
 import healthRoute from "@api/routes/healthRoute";
 import {registerV1Routes} from "@api/routes/v1";
 
@@ -8,16 +9,24 @@ import {registerV1Routes} from "@api/routes/v1";
  * Returns the configured API router with all routes attached.
  *
  * Route structure:
- * - /api/health - Unversioned health check endpoint
- * - /api/v1/* - Version 1 API endpoints (auth, users, verification)
+ * - /api/health  — unversioned health check (for load balancers, monitoring)
+ * - /api/auth/*  — Better Auth catch-all; intentionally NOT versioned because
+ *                  Better Auth's basePath default is /api/auth and its own
+ *                  endpoint contracts are managed by the upstream library.
+ * - /api/v1/*    — versioned business endpoints (users, collections, jobs, …)
  */
 export default (): Router => {
 	const apiRouter = Router();
 
-	// Unversioned health check endpoint (for load balancers, monitoring)
+	// Unversioned health check endpoint
 	healthRoute(apiRouter);
 
-	// Apply versioning middleware for all versioned routes
+	// Better Auth catch-all (also unversioned). Must be registered BEFORE the
+	// versioning middleware so its /api/auth/... paths don't get rejected.
+	authRoute(apiRouter);
+
+	// Versioning middleware guards everything below — only versioned business
+	// endpoints from here on out.
 	apiRouter.use(apiVersioningMiddleware);
 
 	// Mount v1 routes

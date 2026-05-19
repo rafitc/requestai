@@ -7,7 +7,7 @@ import {
 	sql,
 	emailVerificationRequestLogs,
 	type DBTransaction,
-} from "@pluteojs/database";
+} from "@requestai/database";
 
 import logger from "@loaders/logger";
 import config from "@config";

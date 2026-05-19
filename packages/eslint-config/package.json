@@ -1,5 +1,5 @@
 {
-	"name": "@pluteojs/eslint-config",
+	"name": "@requestai/eslint-config",
 	"version": "0.0.0",
 	"type": "module",
 	"private": true,

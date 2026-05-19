@@ -91,7 +91,7 @@ export function BetterAuthPasswordResetEmail({
 	email,
 	resetUrl,
 	expiresAt = new Date(Date.now() + 60 * 60 * 1000), // Default 1 hour
-	appName = "PluteoJS",
+	appName = "RequestAi",
 }: iBetterAuthPasswordResetEmailProps): React.ReactElement {
 	const firstName = name ? name.split(" ")[0] : undefined;
 
@@ -154,7 +154,7 @@ BetterAuthPasswordResetEmail.PreviewProps = {
 	email: "john.doe@example.com",
 	resetUrl: "https://example.com/reset-password?token=abc123xyz",
 	expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-	appName: "PluteoJS",
+	appName: "RequestAi",
 } satisfies iBetterAuthPasswordResetEmailProps;
 
 export default BetterAuthPasswordResetEmail;
